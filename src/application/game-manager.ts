@@ -1,5 +1,5 @@
 import { Field } from "./../domain/entities/field";
-import { Garden } from "../domain/entities/garden";
+import { Farm } from "../domain/entities/farm";
 import { Plant } from "../domain/entities/plant";
 import { PlantRepository } from "../domain/repository/plant-repository";
 import { Cash } from "./cash";
@@ -12,12 +12,12 @@ import { Random } from "../utils/random";
 export class GameManager {
   private static _instance: GameManager;
 
-  private _garden: Garden;
+  private _farm: Farm;
   private _cash: Cash;
   private _clickController: ClickController;
   private _zoom: Zoom;
   private constructor() {
-    this._garden = new Garden({ columns: 10, rows: 10 });
+    this._farm = new Farm({ columns: 10, rows: 10 });
     this._cash = new Cash(15000000);
     this._clickController = new ClickController();
     this._zoom = new Zoom(64);
@@ -30,8 +30,8 @@ export class GameManager {
     return GameManager._instance;
   }
 
-  public get garden() {
-    return this._garden;
+  public get farm() {
+    return this._farm;
   }
 
   public get cash() {
@@ -116,23 +116,23 @@ export class GameManager {
 
   public buyRow(): ActionResult {
     const FIELD_PRICE = 10000;
-    const totalPrice = FIELD_PRICE * this.garden.columns;
+    const totalPrice = FIELD_PRICE * this.farm.columns;
     if (this.cash.amount < totalPrice) {
       return { status: "failure", message: "Not enough cash" };
     }
-    this.cash.subtractAmount(FIELD_PRICE * this.garden.columns);
-    this.garden.addRow();
+    this.cash.subtractAmount(FIELD_PRICE * this.farm.columns);
+    this.farm.addRow();
     return { status: "success", message: "Row bought" };
   }
 
   public buyColumn(): ActionResult {
     const FIELD_PRICE = 10000;
-    const totalPrice = FIELD_PRICE * this.garden.rows;
+    const totalPrice = FIELD_PRICE * this.farm.rows;
     if (this.cash.amount < totalPrice) {
       return { status: "failure", message: "Not enough cash" };
     }
-    this.cash.subtractAmount(FIELD_PRICE * this.garden.rows);
-    this.garden.addColumn();
+    this.cash.subtractAmount(FIELD_PRICE * this.farm.rows);
+    this.farm.addColumn();
     return { status: "success", message: "Column bought" };
   }
 }

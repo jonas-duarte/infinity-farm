@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GameManager } from "../../application/game-manager";
 import { Zoom } from "../../application/zoom";
-import { Garden } from "../../domain/entities/garden";
+import { Farm } from "../../domain/entities/farm";
 import { FieldComponent } from "./FieldComponent";
 
 function* fields(rows: number, columns: number) {
@@ -14,7 +14,7 @@ function* fields(rows: number, columns: number) {
 
 const gameManager = GameManager.getInstance();
 
-export function GardenComponent(props: { garden: Garden }) {
+export function FarmComponent(props: { farm: Farm }) {
   const [fieldSize, setFieldSize] = useState(gameManager.zoom.fieldSize);
 
   useEffect(() => {
@@ -27,15 +27,15 @@ export function GardenComponent(props: { garden: Garden }) {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${props.garden.columns}, 1fr)`,
-        gridTemplateRows: `repeat(${props.garden.rows}, 1fr)`,
+        gridTemplateColumns: `repeat(${props.farm.columns}, 1fr)`,
+        gridTemplateRows: `repeat(${props.farm.rows}, 1fr)`,
         gridGap: "1px",
         width: "min-content",
         height: "min-content",
       }}
     >
       {/* @ts-ignore */}
-      {[...fields(props.garden.rows, props.garden.columns)].map(({ row, column }) => (
+      {[...fields(props.farm.rows, props.farm.columns)].map(({ row, column }) => (
         <FieldComponent key={`${row}-${column}`} row={row} column={column} fieldSize={fieldSize} />
       ))}
     </div>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { GardenComponent } from "./GardenComponent";
+import { FarmComponent } from "./FarmComponent";
 
 import { GameManager } from "../../application/game-manager";
-import { Garden } from "../../domain/entities/garden";
+import { Farm } from "../../domain/entities/farm";
 import { Cash } from "../../application/cash";
 import { ClickController, ClickAction } from "../../application/click-controller";
 import { Plant } from "../../domain/entities/plant";
@@ -39,14 +39,14 @@ const CLICK_MODE_OPTIONS: {
 ];
 
 export function Game() {
-  const [garden, setGarden] = useState<Garden>(gameManager.garden);
+  const [farm, setFarm] = useState<Farm>(gameManager.farm);
   const [cash, setCash] = useState<Cash>(gameManager.cash);
   const [clickAction, setClickAction] = useState<string>(gameManager.clickController.clickAction);
   const [seeds] = useState<Plant[]>(gameManager.seeds);
 
   useEffect(() => {
-    Garden.onUpdateGarden((garden: Garden) => {
-      setGarden(new Garden(garden));
+    Farm.onUpdateFarm((farm: Farm) => {
+      setFarm(new Farm(farm));
     });
 
     Cash.onUpdateCash((cash: Cash) => {
@@ -93,7 +93,7 @@ export function Game() {
       <br />
       <br />
 
-      <GardenComponent garden={garden} />
+      <FarmComponent farm={farm} />
     </div>
   );
 }
