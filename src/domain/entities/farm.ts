@@ -20,8 +20,8 @@ export class Farm {
   private _columns: number;
 
   constructor(farm?: IFarm) {
-    this._rows = farm?.rows || 30;
-    this._columns = farm?.columns || 30;
+    this._rows = farm?.rows || 3;
+    this._columns = farm?.columns || 3;
   }
 
   public get rows(): number {

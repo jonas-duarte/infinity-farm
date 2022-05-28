@@ -17,10 +17,10 @@ export class GameManager {
   private _clickController: ClickController;
   private _zoom: Zoom;
   private constructor() {
-    this._farm = new Farm({ columns: 10, rows: 10 });
-    this._cash = new Cash(15000000);
+    this._farm = new Farm({ columns: 30, rows: 10 });
+    this._cash = new Cash(100);
     this._clickController = new ClickController();
-    this._zoom = new Zoom(64);
+    this._zoom = new Zoom(128);
   }
 
   public static getInstance() {
@@ -72,10 +72,18 @@ export class GameManager {
   };
 
   private _clickSeed = (field: Field): ActionResult => {
-    if (!this._seed) {
+    const seed = this.seed;
+    if (!seed) {
       return { status: "failure", message: "No seed selected" };
     }
-    return field.seed(this._seed);
+    if (seed.price > this.cash.amount) {
+      return { status: "failure", message: "Not enough cash" };
+    }
+    const result = field.seed(seed);
+    if (result.status === "success") {
+      this.cash.subtractAmount(seed.price);
+    }
+    return result;
   };
 
   private _clickHarvest = (field: Field): ActionResult => {

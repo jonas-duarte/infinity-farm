@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Field, FieldProps } from "../../domain/entities/field";
 import { GameManager } from "../../application/game-manager";
 
+import styles from "../../styles/Game.module.css";
+import { Icon } from "../Icon";
+
 const gameManager = GameManager.getInstance();
 
 function getStyle(field: FieldProps): any {
@@ -56,6 +59,7 @@ export function FieldComponent(props: { row: number; column: number; fieldSize: 
 
   return (
     <div
+      className={styles.field}
       style={{
         width: `${props.fieldSize}px`,
         height: `${props.fieldSize}px`,
@@ -64,6 +68,8 @@ export function FieldComponent(props: { row: number; column: number; fieldSize: 
       onClick={() => {
         gameManager.clickOnField(field);
       }}
-    ></div>
+    >
+      {fieldProps.plant && <Icon name={fieldProps.plant} />}
+    </div>
   );
 }

@@ -1,6 +1,4 @@
-import { Field } from "../domain/entities/field";
 import { GameEvents } from "../domain/event/game-events";
-import { Cash } from "./cash";
 
 export type ClickAction = "plow" | "seed" | "harvest" | "water" | "fertilize";
 

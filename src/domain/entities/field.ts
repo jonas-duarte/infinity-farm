@@ -52,6 +52,9 @@ export class Field {
     if (!this._isPlowed) {
       return { status: "failure", message: "Cannot seed unplowed field" };
     }
+    if (this.plant) {
+      return { status: "failure", message: "Field already has a plant" };
+    }
     this._plant = plant.name;
     Field.emitUpdateField(this.row, this.column, this);
     return { status: "success", message: "Seeded field" };
