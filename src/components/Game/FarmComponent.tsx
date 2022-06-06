@@ -15,6 +15,8 @@ function* fields(rows: number, columns: number) {
 const gameManager = GameManager.getInstance();
 
 export function FarmComponent(props: { farm: Farm }) {
+  // @ts-ignore
+  const [fieldsPos] = useState([...fields(props.farm.rows, props.farm.columns)]);
   const [fieldSize, setFieldSize] = useState(gameManager.zoom.fieldSize);
 
   useEffect(() => {
@@ -34,8 +36,7 @@ export function FarmComponent(props: { farm: Farm }) {
         height: "min-content",
       }}
     >
-      {/* @ts-ignore */}
-      {[...fields(props.farm.rows, props.farm.columns)].map(({ row, column }) => (
+      {fieldsPos.map(({ row, column }) => (
         <FieldComponent key={`${row}-${column}`} row={row} column={column} fieldSize={fieldSize} />
       ))}
     </div>

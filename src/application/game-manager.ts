@@ -8,6 +8,7 @@ import { Zoom } from "./zoom";
 import { FieldRepository } from "../domain/repository/field-repository";
 import { ActionResult } from "../domain/contracts/action-result";
 import { Random } from "../utils/random";
+import { Timer } from "./timer";
 
 export class GameManager {
   private static _instance: GameManager;
@@ -16,11 +17,12 @@ export class GameManager {
   private _cash: Cash;
   private _clickController: ClickController;
   private _zoom: Zoom;
+  private _timer: Timer = Timer.getInstance();
   private constructor() {
-    this._farm = new Farm({ columns: 30, rows: 10 });
-    this._cash = new Cash(100);
+    this._farm = new Farm({ columns: 3, rows: 3 });
+    this._cash = new Cash(10);
     this._clickController = new ClickController();
-    this._zoom = new Zoom(128);
+    this._zoom = new Zoom(64);
   }
 
   public static getInstance() {

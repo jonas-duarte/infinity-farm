@@ -4,6 +4,7 @@ import { GameManager } from "../../application/game-manager";
 
 import styles from "../../styles/Game.module.css";
 import { Icon } from "../Icon";
+import { Timer } from "../../application/timer";
 
 const gameManager = GameManager.getInstance();
 
@@ -45,6 +46,7 @@ export function FieldComponent(props: { row: number; column: number; fieldSize: 
     isWatered: field.isWatered,
     isFertilized: field.isFertilized,
   });
+  const [fieldLifeTime, setFieldLifeTime] = useState<number>(field.lifeTime);
 
   useEffect(() => {
     Field.onUpdateField(props.row, props.column, (field: Field) => {
@@ -55,7 +57,12 @@ export function FieldComponent(props: { row: number; column: number; fieldSize: 
         isFertilized: field.isFertilized,
       });
     });
-  }, [props.column, props.row]);
+
+    Timer.onTick((time: number) => {
+      field.grow();
+      setFieldLifeTime(field.lifeTime);
+    });
+  }, [field, props.column, props.row]);
 
   return (
     <div
@@ -69,7 +76,8 @@ export function FieldComponent(props: { row: number; column: number; fieldSize: 
         gameManager.clickOnField(field);
       }}
     >
-      {fieldProps.plant && <Icon name={fieldProps.plant} />}
+      <div className={styles.fieldIcon}>{fieldProps.plant && <Icon name={fieldProps.plant} />}</div>
+      {props.fieldSize >= 64 && fieldProps.plant && <div className={styles.fieldCard}>{fieldLifeTime}</div>}
     </div>
   );
 }

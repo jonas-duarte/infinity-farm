@@ -1,7 +1,26 @@
 import { Field } from "../entities/field";
+import { PlantRepository } from "./plant-repository";
 
 type PosKey = `${number}-${number}`;
 const collection: Map<PosKey, Field> = new Map();
+
+function* generateFields(rows: number, columns: number): IterableIterator<any> {
+  const plants = PlantRepository.getInstance().getAllPlantsNames();
+  for (let row = 0; row < rows; row++) {
+    for (let column = 0; column < columns; column++) {
+      yield {
+        row,
+        column,
+        field: new Field(row, column, {
+          plant: plants[Math.floor(Math.random() * plants.length)],
+          isPlowed: true,
+          isWatered: Boolean(Math.floor(Math.random() * 2)),
+          isFertilized: Boolean(Math.floor(Math.random() * 2)),
+        }),
+      };
+    }
+  }
+}
 
 export class FieldRepository {
   private static instance: FieldRepository;
@@ -11,6 +30,10 @@ export class FieldRepository {
   public static getInstance(): FieldRepository {
     if (!FieldRepository.instance) {
       FieldRepository.instance = new FieldRepository();
+      // @ts-ignore
+      // [...generateFields(100, 60)].forEach(({ row, column, field }) => {
+      //   collection.set(`${row}-${column}`, field);
+      // });
     }
     return FieldRepository.instance;
   }

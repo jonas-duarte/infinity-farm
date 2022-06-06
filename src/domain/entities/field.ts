@@ -25,6 +25,8 @@ export class Field {
   private _isFertilized: boolean;
   private _isWatered: boolean;
 
+  private _time: number = 0;
+
   constructor(private row: number, private column: number, field: FieldProps) {
     this._plant = field.plant;
     this._isPlowed = field.isPlowed;
@@ -55,6 +57,7 @@ export class Field {
     if (this.plant) {
       return { status: "failure", message: "Field already has a plant" };
     }
+    this._time = 0;
     this._plant = plant.name;
     Field.emitUpdateField(this.row, this.column, this);
     return { status: "success", message: "Seeded field" };
@@ -66,6 +69,7 @@ export class Field {
     }
     this._plant = undefined;
     this._isPlowed = false;
+    this._time = 0;
     Field.emitUpdateField(this.row, this.column, this);
     return { status: "success", message: "Harvested plant" };
   }
@@ -101,5 +105,17 @@ export class Field {
     this._isPlowed = true;
     Field.emitUpdateField(this.row, this.column, this);
     return { status: "success", message: "Plowed field" };
+  }
+
+  public grow(): ActionResult {
+    if (!this._plant) {
+      return { status: "failure", message: "No plant to grow" };
+    }
+    this._time++;
+    return { status: "success", message: "Grown plant" };
+  }
+
+  public get lifeTime(): number {
+    return this._time;
   }
 }

@@ -119,8 +119,9 @@ export function Game() {
                 key={seed.name}
                 style={{ backgroundColor: selectedSeed === seed.name ? "#00000055" : "" }}
                 onClick={() => {
-                  setSelectedSeed(seed.name);
+                  gameManager.clickController.setClickAction("seed");
                   gameManager.selectSeed(seed);
+                  setSelectedSeed(seed.name);
                 }}
               >
                 <Icon name={seed.name} />
@@ -130,8 +131,9 @@ export function Game() {
           </div>
         </div>
       </div>
-
-      <FarmComponent farm={farm} />
+      <div className={styles.gameBoard}>
+        <FarmComponent farm={farm} />
+      </div>
     </div>
   );
 }
